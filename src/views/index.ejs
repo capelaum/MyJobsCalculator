@@ -77,7 +77,7 @@
 
         <div class="cards">
           <% jobs.forEach((job) => { %> 
-            <div class="card <%= job.status %>" data-id="<%= job.id %>">
+            <div class="card  <%= job.status !== 'done' ? 'progress' : 'done' %>" data-id="<%= job.id %>">
               <div class="id column"><%= job.id %></div>
               <div class="name column">
                 <%= job.name %> 
@@ -86,8 +86,10 @@
                 <span>Prazo</span>
                 <p>
                   <% if(job.status === "progress") { %> 
-                    <%= job.deadline %> 
-                  <% } else { %>
+                    <%= job.remainingDays %> dias
+                  <% } else if(job.status === "today") { %>
+                    Hoje
+                  <% } else { %> 
                     Prazo encerrado
                   <% } %> 
                 </p>
@@ -97,7 +99,7 @@
                 <p>R$ <%= job.budget.toFixed(2).replace('.', ',') %></p>
               </div>
               <div class="status badge column">
-                <%= job.status === 'done' ? 'Encerrado' : 'Em andamento' %> 
+                <%= job.status !== 'done' ? 'Em andamento' :'Encerrado' %> 
               </div>
               <div class="actions column flex">
                 <p class="sr-only">Ações</p>

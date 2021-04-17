@@ -42,8 +42,8 @@ const Job = {
     {
       id: 2,
       name: "Away Project",
-      "daily-hours": 5,
-      "total-hours": 2,
+      "daily-hours": 0.2,
+      "total-hours": 1,
       created_at: Date.now(),
     },
   ],
@@ -51,24 +51,17 @@ const Job = {
   controllers: {
     index(req, res) {
       const updatedJobs = Job.data.map(job => {
-        const remainingTime = Job.services.calculateRemainingTime(job);
-        let deadline, status;
+        const remainingDays = Job.services.calculateRemainingTime(job);
 
-        if(remainingTime.hoursLeft && remainingTime.minutesLeft) {
-          deadline = `${remainingTime.hoursLeft}h ${remainingTime.minutesLeft}m`
-        } else {
-          deadline = `${remainingTime.daysLeft}d`
-        }
+        let status;
 
-        if(remainingTime.minutesLeft) {
-          status = remainingTime.minutesLeft <= 0 ? "done" : "progress";
-        } else {
-          status = "progress";
-        }
+        if(remainingDays < 0) status = 'done'
+        if(remainingDays === 0) status = 'today'
+        if(remainingDays > 0) status = 'progress'
 
         return {
           ...job,
-          deadline,
+          remainingDays,
           status,
           budget: Profile.data["value-hour"] * job["total-hours"],
         };
@@ -121,7 +114,7 @@ const Job = {
       // poe na forma de Data: Sat Apr 17 horario..
       const createdDate = new Date(job.created_at);
 
-      const remainingDays = Math.floor(job["total-hours"] / job["daily-hours"]);
+      const remainingDays = Math.ceil(job["total-hours"] / job["daily-hours"]);
       console.log("🚀 ~ remainingDays: ", remainingDays);
 
       // soma dia da data de criação mais dias necessarios para entrega
@@ -141,7 +134,7 @@ const Job = {
       const daysLeft = Math.floor(timeDiffMs / dayMs);
       console.log("🚀 ~ daysLeft", daysLeft);
 
-      if(daysLeft < 1) {
+      if(daysLeft <= 1) {
         const dueTime = job.created_at + (job["total-hours"] * hourMs);
         const timeLeft = dueTime - Date.now();
         console.log("🚀 ~ timeLeft", timeLeft)
@@ -151,19 +144,10 @@ const Job = {
         
         const minutesLeft = Math.floor((timeLeft / minuteMs) % 60);
         console.log("🚀 ~ minutesLeft", minutesLeft);
-
-        const dayDiff = 0;
-        return {
-          dayDiff,
-          hoursLeft,
-          minutesLeft
-        };
       }
-      
+
       console.log("-----------------");
-      return {
-        daysLeft,
-      };
+      return daysLeft;
       
     },
   },
