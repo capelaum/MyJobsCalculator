@@ -24,13 +24,13 @@
     />
 
     <script type="module" src="/scripts/job-edit.js"></script>
-    
   </head>
   <body id="page-job-edit">
     <%- include('parts/page-header', { title: 'Editar Job'}) %>
 
     <div class="container flex animate-up delay-2">
-        <form id="form-job">
+        <form id="form-job" method="POST" action="/job" >
+
           <fieldset>
             <legend>Dados do Job</legend>
             <div class="separator light"></div>
@@ -68,7 +68,7 @@
               </div>
             </div>
           </fieldset>
-    
+
         </form>
       </main>
       <aside class="card">
