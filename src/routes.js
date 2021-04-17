@@ -10,7 +10,7 @@ const Profile = {
     "monthly-budget": 1200,
     "days-per-week": 5,
     "hours-per-day": 6,
-    "vacation-per-year": 2,
+    "vacation-per-year": 4,
     "value-hour": 75,
   },
 
@@ -56,7 +56,7 @@ const Job = {
       created_at: Date.now(),
     },
     {
-      id: 2,
+      id: 3,
       name: "Away Project",
       "daily-hours": 0.5,
       "total-hours": 1,
@@ -79,7 +79,10 @@ const Job = {
           ...job,
           remainingDays,
           status,
-          budget: Profile.data["value-hour"] * job["total-hours"],
+          budget: Job.services.calculateBudget(
+            Profile.data["value-hour"],
+            job["total-hours"]
+          ),
         };
       });
 
@@ -123,6 +126,45 @@ const Job = {
       }
       return true;
     },
+
+    show(req, res) {
+      const jobId = req.params.id;
+      const job = Job.data.find(job => Number(job.id) === Number(jobId));
+
+      if (!job) {
+        return res.send("Job not found");
+      }
+
+      job.budget = Job.services.calculateBudget(
+        Profile.data["value-hour"],
+        job["total-hours"]
+      );
+
+      return res.render(`${views}job-edit`, { job });
+    },
+
+    update(req, res) {
+      const jobId = req.params.id;
+      const job = Job.services.getJob(req, res);
+
+      const updatedJob = {
+        ...job,
+        name: req.body.name,
+        "total-hours": req.body["total-hours"],
+        "daily-hours": req.body["daily-hours"],
+      }
+
+      Job.data = Job.data.map(job => {
+
+        if(Number(job.id) === Number(jobId)) {
+          job = updatedJob;
+        }
+
+        return job;
+      });
+
+      res.redirect('/job/' + jobId);
+    },
   },
 
   services: {
@@ -165,6 +207,16 @@ const Job = {
       console.log("-----------------");
       return daysLeft;
     },
+    calculateBudget: (valueHour, totalHours) => valueHour * totalHours,
+    getJob(req, res) {
+      const jobId = req.params.id;
+      const job = Job.data.find(job => Number(job.id) === Number(jobId));
+
+      if (!job) {
+        return res.send("Job not found");
+      }
+      return job;
+    },
   },
 };
 
@@ -172,7 +224,9 @@ routes.get("/", Job.controllers.index);
 routes.get("/job", Job.controllers.create);
 routes.post("/job", Job.controllers.save);
 
-routes.get("/job/edit", (req, res) => res.render(`${views}job-edit`));
+routes.get("/job/:id", Job.controllers.show);
+routes.post("/job/:id", Job.controllers.update);
+
 routes.get("/profile", Profile.controllers.index);
 routes.post("/profile", Profile.controllers.update);
 
