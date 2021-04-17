@@ -104,11 +104,10 @@ const Job = {
       }
 
       if (isValidJob) {
-        // const lastId = Job.data[Job.data.length - 1]?.id || 1;
-        const lastId = Job.data.length + 1;
+        const lastId = Job.data[Job.data.length - 1]?.id || 0;
 
         Job.data.push({
-          id: lastId,
+          id: lastId + 1,
           name: req.body.name,
           "daily-hours": req.body["daily-hours"],
           "total-hours": req.body["total-hours"],
@@ -129,11 +128,7 @@ const Job = {
 
     show(req, res) {
       const jobId = req.params.id;
-      const job = Job.data.find(job => Number(job.id) === Number(jobId));
-
-      if (!job) {
-        return res.send("Job not found");
-      }
+      const job = Job.services.getJob(jobId, res);
 
       job.budget = Job.services.calculateBudget(
         Profile.data["value-hour"],
@@ -145,25 +140,32 @@ const Job = {
 
     update(req, res) {
       const jobId = req.params.id;
-      const job = Job.services.getJob(req, res);
+      const job = Job.services.getJob(jobId, res);
 
       const updatedJob = {
         ...job,
         name: req.body.name,
         "total-hours": req.body["total-hours"],
         "daily-hours": req.body["daily-hours"],
-      }
+      };
 
       Job.data = Job.data.map(job => {
-
-        if(Number(job.id) === Number(jobId)) {
+        if (Number(job.id) === Number(jobId)) {
           job = updatedJob;
         }
 
         return job;
       });
 
-      res.redirect('/job/' + jobId);
+      res.redirect("/job/" + jobId);
+    },
+
+    delete(req, res) {
+      const jobId = req.params.id;
+
+      Job.data = Job.data.filter(job => Number(job.id) !== Number(jobId));
+
+      return res.redirect("/");
     },
   },
 
@@ -208,8 +210,7 @@ const Job = {
       return daysLeft;
     },
     calculateBudget: (valueHour, totalHours) => valueHour * totalHours,
-    getJob(req, res) {
-      const jobId = req.params.id;
+    getJob(jobId, res) {
       const job = Job.data.find(job => Number(job.id) === Number(jobId));
 
       if (!job) {
@@ -226,6 +227,7 @@ routes.post("/job", Job.controllers.save);
 
 routes.get("/job/:id", Job.controllers.show);
 routes.post("/job/:id", Job.controllers.update);
+routes.post("/job/delete/:id", Job.controllers.delete);
 
 routes.get("/profile", Profile.controllers.index);
 routes.post("/profile", Profile.controllers.update);
