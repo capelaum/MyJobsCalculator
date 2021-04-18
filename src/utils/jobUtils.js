@@ -1,5 +1,5 @@
 module.exports = {
-  calculateRemainingTime(job) {
+  calculateRemainingDays(job) {
     // poe na forma de Data: Sat Apr 17 horario..
     const createdDate = new Date(job.created_at);
 
@@ -16,31 +16,44 @@ module.exports = {
     const timeDiffMs = dueDateMs - Date.now();
 
     const dayMs = 1000 * 60 * 60 * 24;
-    const hourMs = 1000 * 60 * 60;
-    const minuteMs = 1000 * 60;
 
     // transforma para dias restantes
     const daysLeft = Math.floor(timeDiffMs / dayMs);
     // console.log("🚀 ~ daysLeft", daysLeft);
 
-    if (daysLeft <= 1) {
-      const dueTime = job.created_at + job["total-hours"] * hourMs;
-      const timeLeft = dueTime - Date.now();
-      // console.log("🚀 ~ timeLeft", timeLeft);
-
-      const hoursLeft = Math.floor((timeLeft / hourMs) % 24);
-      // console.log("🚀 ~ hoursLeft", hoursLeft);
-
-      const minutesLeft = Math.floor((timeLeft / minuteMs) % 60);
-      // console.log("🚀 ~ minutesLeft", minutesLeft);
-    }
-
     console.log("-----------------");
     return daysLeft;
   },
 
+  calculateRemainingHours(job) {
+    const hourMs = 1000 * 60 * 60;
+
+    const dueTime = job.created_at + job["total-hours"] * hourMs;
+    const timeLeft = dueTime - Date.now();
+    // console.log("🚀 ~ timeLeft", timeLeft);
+
+    const hoursLeft = Math.floor((timeLeft / hourMs) % 24);
+    // console.log("🚀 ~ hoursLeft", hoursLeft);
+
+    return hoursLeft;
+  },
+
+  calculateRemainingMinutes(job) {
+    const hourMs = 1000 * 60 * 60;
+    const minuteMs = 1000 * 60;
+
+    const dueTime = job.created_at + job["total-hours"] * hourMs;
+    const timeLeft = dueTime - Date.now();
+    // console.log("🚀 ~ timeLeft", timeLeft);
+
+    const minutesLeft = Math.floor((timeLeft / minuteMs) % 60);
+    // console.log("🚀 ~ minutesLeft", minutesLeft);
+
+    return minutesLeft;
+  },
+
   validateJob(job) {
-    if (job["daily-hours"] > job["total-hours"]) {
+    if (Number(job["daily-hours"]) > Number(job["total-hours"])) {
       console.log(job["daily-hours"], job["total-hours"]);
       return false;
     }
@@ -49,7 +62,5 @@ module.exports = {
 
   calculateBudget: (valueHour, totalHours) => valueHour * totalHours,
 
-  getJob(jobId, res) {
-    
-  },
-}
+  getJob(jobId, res) {},
+};

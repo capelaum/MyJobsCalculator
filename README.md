@@ -26,6 +26,20 @@
 
 O JobsCalc é uma aplicação de estimativa de cálculo para projetos freelancer, onde é possível cadastrar e excluir jobs (projetos), obtendo uma estimativa de custo de cada job. Além disso, é possível traçar o valor da hora da pessoa que estará usando o sistema 💰
 
+## Executando
+
+Instalando as dependências
+
+``` bash
+$ npm install
+```
+
+Ir na pasta raiz do projeto e executar o script ``dev``
+
+``` bash
+$ npm run dev
+```
+
 ## 🚀 Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:

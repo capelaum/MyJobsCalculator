@@ -1,7 +1,7 @@
 {
-  "name": "My Jobs Calculator",
+  "name": "my_jobs_calculator",
   "version": "1.0.0",
-  "description": "Freelance Calculator",
+  "description": "Freelance Jobs Management Calculator",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon ."

@@ -32,7 +32,7 @@
           <img id="logo" src="/images/logo.svg" alt="Logo" />
           <span id="notification">
             <img src="/images/alert-octagon.svg" alt="Alerta" />
-            Você tem 2 horas livres no seu dia
+            <%= freeHours > 0 ? `Você tem ${freeHours} horas livres no seu dia` : 'Você não tem horas livres..' %>  
           </span>
           <a href="/profile" id="avatar-profile">
             <p><%= profile.name %> <span>Ver perfil</span></p>
@@ -87,7 +87,8 @@
                     <%= job.remainingDays %> 
                     <%= job.remainingDays <= 1 ? 'dia' : 'dias' %>
                   <% } else if(job.status === "today") { %>
-                    Hoje
+                    <%= job.remainingHours %>h
+                    <%= job.remainingMinutes %>m
                   <% } else { %> 
                     Prazo encerrado
                   <% } %> 
