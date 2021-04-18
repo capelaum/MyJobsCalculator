@@ -21,7 +21,6 @@ module.exports = {
     const daysLeft = Math.floor(timeDiffMs / dayMs);
     // console.log("🚀 ~ daysLeft", daysLeft);
 
-    console.log("-----------------");
     return daysLeft;
   },
 
