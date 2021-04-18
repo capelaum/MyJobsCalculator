@@ -1,8 +1,6 @@
 const express = require("express");
 const routes = express.Router();
 
-const views = `${__dirname}/views/`;
-
 const Profile = {
   data: {
     name: "Luis",
@@ -16,7 +14,7 @@ const Profile = {
 
   controllers: {
     index(req, res) {
-      return res.render(`${views}profile`, { profile: Profile.data });
+      return res.render("profile", { profile: Profile.data });
     },
 
     update(req, res) {
@@ -86,16 +84,15 @@ const Job = {
         };
       });
 
-      return res.render(`${views}index`, { jobs: updatedJobs });
+      return res.render("index", { jobs: updatedJobs });
     },
 
     create(req, res) {
-      return res.render(`${views}job`);
+      return res.render("job");
     },
 
     save(req, res) {
-      // req.body: { name: 'Luis', 'daily-hours': '3.3', 'total-hours': '2' }
-      const isValidJob = Job.controllers.validateJob(req.body);
+      const isValidJob = Job.services.validateJob(req.body);
 
       if (!isValidJob) {
         const errorMsg =
@@ -118,14 +115,6 @@ const Job = {
       return res.redirect("/");
     },
 
-    validateJob(job) {
-      if (job["daily-hours"] > job["total-hours"]) {
-        console.log(job["daily-hours"], job["total-hours"]);
-        return false;
-      }
-      return true;
-    },
-
     show(req, res) {
       const jobId = req.params.id;
       const job = Job.services.getJob(jobId, res);
@@ -135,7 +124,7 @@ const Job = {
         job["total-hours"]
       );
 
-      return res.render(`${views}job-edit`, { job });
+      return res.render("job-edit", { job });
     },
 
     update(req, res) {
@@ -208,6 +197,13 @@ const Job = {
 
       console.log("-----------------");
       return daysLeft;
+    },
+    validateJob(job) {
+      if (job["daily-hours"] > job["total-hours"]) {
+        console.log(job["daily-hours"], job["total-hours"]);
+        return false;
+      }
+      return true;
     },
     calculateBudget: (valueHour, totalHours) => valueHour * totalHours,
     getJob(jobId, res) {
