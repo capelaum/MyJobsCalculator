@@ -1,5 +1,5 @@
 {
-  "name": "MyJobsCalculator.",
+  "name": "My Jobs Calculator",
   "version": "1.0.0",
   "description": "Freelance Calculator",
   "main": "src/server.js",
