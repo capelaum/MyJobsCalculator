@@ -8,7 +8,6 @@ module.exports = {
   },
 
   async save(req, res) {
-    JobUtils.validateJob(req.body);
 
     await Jobs.create({
       name: req.body.name,
