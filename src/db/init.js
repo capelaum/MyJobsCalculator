@@ -32,14 +32,16 @@ const initDb = {
         monthly_budget, 
         days_per_week, 
         hours_per_day, 
-        vacation_per_year
+        vacation_per_year,
+        value-hour
       ) VALUES (
         "Luis",
         "https://github.com/capelaum.png",
         1200,
         5,
         6,
-        4
+        4,
+        50
       );`
     );
 
