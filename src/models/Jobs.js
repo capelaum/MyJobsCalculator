@@ -14,17 +14,6 @@ module.exports = {
       created_at: job.created_at,
     }));
   },
-  
-  async update(newJob) {
-    const db = await Database();
-    await db.close();
-
-    data = newJob;
-  },
-
-  delete(id) {
-    data = data.filter(job => Number(job.id) !== Number(id));
-  },
 
   async create(newJob) {
     const db = await Database();
@@ -43,4 +32,18 @@ module.exports = {
 
     await db.close();
   },
+  
+  async update(newJob) {
+    const db = await Database();
+    await db.close();
+
+    data = newJob;
+  },
+
+  async delete(id) {
+    const db = await Database();
+    await db.run(`DELETE FROM jobs WHERE id = ${id}`);
+    await db.close();
+  },
+
 };

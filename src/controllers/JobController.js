@@ -66,9 +66,9 @@ module.exports = {
     res.redirect("/job/" + jobId);
   },
 
-  delete(req, res) {
+  async delete(req, res) {
     const jobId = req.params.id;
-    Jobs.delete(jobId);
+    await Jobs.delete(jobId);
 
     return res.redirect("/");
   },
