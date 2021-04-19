@@ -7,8 +7,8 @@ module.exports = {
     return res.render("job");
   },
 
-  save(req, res) {
-    const jobs = Jobs.get();
+  async save(req, res) {
+    const jobs = await Jobs.get();
     const isValidJob = JobUtils.validateJob(req.body);
 
     if (!isValidJob) {
@@ -32,11 +32,11 @@ module.exports = {
     return res.redirect("/");
   },
 
-  show(req, res) {
-    const jobs = Jobs.get();
+  async show(req, res) {
     const jobId = req.params.id;
+    const jobs = await Jobs.get();
     const job = jobs.find(job => Number(job.id) === Number(jobId));
-    const profile = Profile.get();
+    const profile = await Profile.get();
 
     if (!job) {
       return res.send("Job not found");
@@ -50,8 +50,8 @@ module.exports = {
     return res.render("job-edit", { job });
   },
 
-  update(req, res) {
-    let jobs = Jobs.get();
+  async update(req, res) {
+    let jobs = await Jobs.get();
     const jobId = req.params.id;
     const job = jobs.find(job => Number(job.id) === Number(jobId));
 

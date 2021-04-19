@@ -28,7 +28,7 @@ module.exports = {
       hours_per_day = ${newData["hours-per-day"]},
       vacation_per_year = ${newData["vacation-per-year"]},
       value_hour = ${newData["value-hour"]}
-    `)
+    `);
 
     await db.close();
   },

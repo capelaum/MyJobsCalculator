@@ -4,7 +4,7 @@ const JobUtils = require("../utils/jobUtils");
 
 module.exports = {
   async index(req, res) {
-    const jobs = Jobs.get();
+    const jobs = await Jobs.get();
     const profile = await Profile.get();
     let jobsTotalHours = 0;
     let status;
