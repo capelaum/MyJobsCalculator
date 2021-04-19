@@ -42,6 +42,14 @@ $ npm run dev
 
 Acessar [localhost:3000](http://localhost:3000) e ver a aplicação rodando 😉
 
+## Banco de dados
+
+Caso queira começar um banco de dados com valores de exemplo, exclua o arquivo ``database.sqlite`` do projeto e execute o comando abaixo na pasta raiz do projeto
+
+```bash
+$ npm run init-db
+```
+
 ## 🚀 Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
