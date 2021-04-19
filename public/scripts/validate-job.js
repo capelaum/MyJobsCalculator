@@ -1,4 +1,3 @@
-const nameInput = document.getElementById("name");
 const submitBtn = document.getElementById("submit-btn");
 const dailyHoursInput = document.getElementById("daily-hours");
 const totalHoursInput = document.getElementById("total-hours");
