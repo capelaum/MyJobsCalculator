@@ -8,26 +8,14 @@ module.exports = {
   },
 
   async save(req, res) {
-    const jobs = await Jobs.get();
-    const isValidJob = JobUtils.validateJob(req.body);
+    JobUtils.validateJob(req.body);
 
-    if (!isValidJob) {
-      const errorMsg =
-        "Job Inválido! Estimativa não pode ser menor que horas diárias para o Job";
-      return res.redirect(`/?${errorMsg}`);
-    }
-
-    if (isValidJob) {
-      const lastId = jobs[jobs.length - 1]?.id || 0;
-
-      Jobs.create({
-        id: lastId + 1,
-        name: req.body.name,
-        "daily-hours": req.body["daily-hours"],
-        "total-hours": req.body["total-hours"],
-        created_at: Date.now(),
-      });
-    }
+    await Jobs.create({
+      name: req.body.name,
+      "daily-hours": req.body["daily-hours"],
+      "total-hours": req.body["total-hours"],
+      created_at: Date.now(),
+    });
 
     return res.redirect("/");
   },

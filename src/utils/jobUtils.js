@@ -54,9 +54,11 @@ module.exports = {
   validateJob(job) {
     if (Number(job["daily-hours"]) > Number(job["total-hours"])) {
       console.log(job["daily-hours"], job["total-hours"]);
-      return false;
+
+      const errorMsg =
+        "Job Inválido! Estimativa não pode ser menor que horas diárias para o Job";
+      return res.redirect(`/?${errorMsg}`);
     }
-    return true;
   },
 
   calculateBudget: (valueHour, totalHours) => valueHour * totalHours,

@@ -15,15 +15,32 @@ module.exports = {
     }));
   },
   
-  update(newJob) {
+  async update(newJob) {
+    const db = await Database();
+    await db.close();
+
     data = newJob;
   },
 
   delete(id) {
     data = data.filter(job => Number(job.id) !== Number(id));
   },
-  
-  create(newJob) {
-    data.push(newJob);
+
+  async create(newJob) {
+    const db = await Database();
+
+    await db.run(`INSERT INTO jobs (
+      name,
+      daily_hours,
+      total_hours,
+      created_at
+    ) VALUES (
+      "${newJob.name}",
+      ${newJob["daily-hours"]},
+      ${newJob["total-hours"]},
+      ${newJob.created_at}
+    )`);
+
+    await db.close();
   },
 };
