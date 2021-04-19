@@ -40,6 +40,8 @@ Ir na pasta raiz do projeto e executar o script ``dev``
 $ npm run dev
 ```
 
+Acessar [localhost:3000](http://localhost:3000) e ver a aplicação rodando 😉
+
 ## 🚀 Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
