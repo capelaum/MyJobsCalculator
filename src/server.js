@@ -6,9 +6,6 @@ const path = require("path");
 server.set('view engine', 'ejs');
 server.set('views', path.join(__dirname, 'views'));
 
-// var publicDir = path.join(__dirname, '../public');
-// server.use(express.static(publicDir));
-
 server.use(express.static(path.join(__dirname, 'public')));
 server.use(express.urlencoded({ extended: true })); // usar o req.body
 server.use(routes);
