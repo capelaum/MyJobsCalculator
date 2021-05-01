@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon .",
     "init-db": "node src/db/init.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js --port $PORT"
   },
   "repository": {
     "type": "git",
